@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>碼表\Stopwatch</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .stopwatch {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            font-size: 40px;
+            margin: 10px 0;
+        }
+        button {
+            width: 100px;
+            height: 40px;
+            margin: 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .start-stop, .reset {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .start-stop:hover, .reset:hover {
+            background-color: #45a049;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        .records {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .record {
+            margin: 5px 0;
+        }
+        #language {
+            background-color: #4CAF50;
+            color: white;
+            width:200px;
+            
+        }
+        #lan-bord {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="stopwatch">
+        <p id="p1">0.00 sec(s)</p>
+        <button id="b1" class="start-stop">開始或暫停</button>
+        <button id="r1" class="reset">重置</button>
+    </div>
+    <div class="stopwatch">
+        <p id="p2">0.00 sec(s)</p>
+        <button id="b2" class="start-stop">開始或暫停</button>
+        <button id="r2" class="reset">重置</button>
+    </div>
+    <div class="stopwatch">
+        <p id="p3">0.00 sec(s)</p>
+        <button id="b3" class="start-stop">開始或暫停</button>
+        <button id="r3" class="reset">重置</button>
+    </div>
+    <div class="records">
+        <h2>紀錄</h2>
+        <div id="record1" class="record"></div>
+        <div id="record2" class="record"></div>
+        <div id="record3" class="record"></div>
+    </div>
+
+    <div id="lan-bord"><button id="language">Chinese\English</button></div>
+    
+
+    <script>
+        // 懶人定義
+        var f = false;
+        var t = true;
+        // 其他定義
+        var running = [f, f, f];
+        var nowtime = [0, 0, 0];
+        var records = [[], [], []];
+        var eng=f;
+
+        $(document).ready(function() {
+            // 第一個碼表開始或暫停按鈕
+            $('#b1').click(function() {
+                running[0] = !running[0];
+            });
+
+            // 第一個碼表重置按鈕
+            $('#r1').click(function() {
+                if (nowtime[0] > 0) {
+                    records[0].push(nowtime[0].toFixed(2) + " sec(s)");
+                    updateRecords(0);
+                }
+                running[0] = f;
+                nowtime[0] = 0;
+                $("#p1").text("0.00 sec(s)");
+            });
+
+            // 第二個碼表開始或暫停按鈕
+            $('#b2').click(function() {
+                running[1] = !running[1];
+            });
+
+            // 第二個碼表重置按鈕
+            $('#r2').click(function() {
+                if (nowtime[1] > 0) {
+                    records[1].push(nowtime[1].toFixed(2) + " sec(s)");
+                    updateRecords(1);
+                }
+                running[1] = f;
+                nowtime[1] = 0;
+                $("#p2").text("0.00 sec(s)");
+            });
+
+            // 第三個碼表開始或暫停按鈕
+            $('#b3').click(function() {
+                running[2] = !running[2];
+            });
+
+            // 第三個碼表重置按鈕
+            $('#r3').click(function() {
+                if (nowtime[2] > 0) {
+                    records[2].push(nowtime[2].toFixed(2) + " sec(s)");
+                    updateRecords(2);
+                }
+                running[2] = f;
+                nowtime[2] = 0;
+                $("#p3").text("0.00 sec(s)");
+            });
+
+            function updateRecords(index) {
+                var recordDiv = $("#record" + (index + 1));
+                recordDiv.empty();
+                for (var i = 0; i < records[index].length; i++) {
+                    recordDiv.append("<p>" + records[index][i] + "</p>");
+                }
+            }
+
+            setInterval(function() {
+                if (running[0] == t) {
+                    nowtime[0] += 0.01;
+                    $("#p1").text(nowtime[0].toFixed(2) + " sec(s)");
+                }
+                if (running[1] == t) {
+                    nowtime[1] += 0.01;
+                    $("#p2").text(nowtime[1].toFixed(2) + " sec(s)");
+                }
+                if (running[2] == t) {
+                    nowtime[2] += 0.01; 
+                    $("#p3").text(nowtime[2].toFixed(2) + " sec(s)");
+                }
+            }, 10);
+        });
+
+        $("#language").click(changeLang);
+
+        function changeLang() {
+            if (eng==false) {
+                $('.start-stop').text("Start or pause");
+                $('.reset').text("Reset");
+                $("h2").text("Records");
+                eng = true;
+            }
+            else {
+                $('.start-stop').text("開始或暫停");
+                $('.reset').text("重置");
+                $("h2").text("紀錄");
+                eng = false;
+            }
+        }
+    </script>
+</body>
+</html>
