@@ -5,18 +5,6 @@
     <title>碼表\Stopwatch</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-            text-align: center;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            min-height: 100vh;
-            margin: 0;
-        }
         .stopwatch {
             background-color: #fff;
             border: 1px solid #ddd;
@@ -69,9 +57,49 @@
         #lan-bord {
             text-align: right;
         }
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+            /* padding: 20px;  <-- 移除或註解掉這行，改由下方內容控制 */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #endofsupport {
+            background-color: #fcffdd;
+            border-bottom: 1px solid #fcff5c; /* 改為只有底邊框，更有橫幅感 */
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 0px 0; /* 增加上下間距 */
+            margin-bottom: 20px; /* 讓橫幅跟下方的碼表保持距離 */
+        }
+
+        /* 為了讓原本 body 的 padding 效果回到碼表上，可以包一個容器或直接對 stopwatch 加 margin */
+        .stopwatch {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px auto; /* 置中 */
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #endofsupport a{
+            color: #c0b411;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+    <div id="endofsupport">
+        <h4>此版本碼表即將停止營運，建議轉移至<a href="https://stupidestjack.github.io/geministopwatch/">新版本碼表</a>。</h4>
+    </div>
     <div class="stopwatch">
         <p id="p1">0.00 sec(s)</p>
         <button id="b1" class="start-stop">開始或暫停</button>
@@ -187,12 +215,14 @@
                 $('.start-stop').text("Start or pause");
                 $('.reset').text("Reset");
                 $("h2").text("Records");
+                $("h4").html("This version of stop watch will soon be discontinued. It's recommended to switch to <a href='https://stupidestjack.github.io/geministopwatch/'>a newer version of stop watch</a>.");
                 eng = true;
             }
             else {
                 $('.start-stop').text("開始或暫停");
                 $('.reset').text("重置");
                 $("h2").text("紀錄");
+                $("h4").html("此版本碼表即將停止營運，建議轉移至<a href='https://stupidestjack.github.io/geministopwatch/'>新版本碼表</a>。");
                 eng = false;
             }
         }
